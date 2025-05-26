@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El Valor de la Electromovilidad en Minería</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: white;
+      color: #003366;
+      text-align: center;
+      padding: 20px;
+    }
+    #pregunta {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #003366;
+    }
+    .respuesta-btn {
+      background-color: #FF2A1F;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    .respuesta-btn:hover {
+      background-color: #e6251c;
+    }
+    #resultado {
+      font-size: 22px;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #003366;
+      line-height: 1.5;
+    }
+    #logo {
+      max-width: 200px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #003366;
+      margin-bottom: 30px;
+    }
+    .puntuacion {
+      font-size: 20px;
+      margin-top: 15px;
+      color: #FF2A1F;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <img id="logo" src="logo_empresa.png" alt="Logo de la Empresa" />
+  <h1>El Impacto de los Buses Eléctricos en Antapaccay</h1>
+  <div id="pregunta"></div>
+  <div id="respuestas"></div>
+  <div id="resultado"></div>
+  <div class="puntuacion" id="puntuacion"></div>
+
+  <script>
+    const preguntas = [
+      {
+        pregunta: "¿Qué es la electromovilidad?",
+        respuestas: ["El uso de vehículos eléctricos", "Un tipo de energía solar", "Un software de gestión"],
+        correcta: 0
+      },
+      {
+        pregunta: "¿Qué componente es esencial en un bus eléctrico?",
+        respuestas: ["Motor diésel", "Batería de tracción", "Filtro de aire"],
+        correcta: 1
+      },
+      {
+        pregunta: "¿Cuántos kg de CO₂ evitará Antapaccay con sus buses eléctricos?",
+        respuestas: ["270,000 kg", "1,000,000 kg", "2,700,000 kg"],
+        correcta: 2,
+        explicacion: "¡Correcto! El proyecto evitará 2.7 millones de kg de CO₂."
+      },
+      {
+        pregunta: "¿Qué contaminante se reducirá en 6,448 kg gracias a los buses eléctricos?",
+        respuestas: ["CO (Monóxido de Carbono)", "NOx (Óxidos de Nitrógeno)", "PM (Material Particulado)"],
+        correcta: 1,
+        explicacion: "Exacto: 6,448 kg de NOx se reducirán, mejorando la calidad del aire."
+      },
+      {
+        pregunta: "¿Qué característica NO tienen los buses eléctricos de Antapaccay?",
+        respuestas: ["Reducción de ruido", "Uso de combustible diésel", "Cero emisiones directas"],
+        correcta: 1,
+        explicacion: "Correcto: Los buses eléctricos NO usan combustible diésel."
+      },
+      {
+        pregunta: "¿Qué estándar usó Antapaccay para medir la huella de carbono?",
+        respuestas: ["ISO 14001", "GHG Protocol", "Protocolo de Kioto"],
+        correcta: 1,
+        explicacion: "Así es: GHG Protocol es el estándar internacional para estos cálculos."
+      },
+      {
+        pregunta: "¿Qué ventaja social destacó en el proyecto?",
+        respuestas: ["Mayor consumo energético", "Creación de empleos en electromovilidad", "Aumento del tráfico"],
+        correcta: 1,
+        explicacion: "¡Correcto! El proyecto genera nuevas oportunidades laborales."
+      },
+      {
+        pregunta: "¿Qué beneficio ofrecen los buses eléctricos respecto al ruido?",
+        respuestas: ["Generan más ruido que los diésel", "Reducen la contaminación acústica", "No producen ningún sonido"],
+        correcta: 1,
+        explicacion: "Exacto: Los buses eléctricos reducen significativamente el ruido."
+      }
+    ];
+
+    let indice = 0;
+    let puntuacion = 0;
+
+    function mostrarPregunta() {
+      const p = preguntas[indice];
+      document.getElementById("pregunta").textContent = p.pregunta;
+      const contenedor = document.getElementById("respuestas");
+      contenedor.innerHTML = "";
+
+      p.respuestas.forEach((texto, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = texto;
+        btn.className = "respuesta-btn";
+        btn.onclick = () => seleccionarRespuesta(i);
+        contenedor.appendChild(btn);
+      });
+    }
+
+    function seleccionarRespuesta(i) {
+      const preguntaActual = preguntas[indice];
+      const esCorrecta = i === preguntaActual.correcta;
+      
+      if (esCorrecta) {
+        puntuacion++;
+        document.getElementById("resultado").textContent = preguntaActual.explicacion || "¡Respuesta correcta!";
+      } else {
+        const correcta = preguntaActual.respuestas[preguntaActual.correcta];
+        document.getElementById("resultado").textContent = `La respuesta correcta es: "${correcta}". ${preguntaActual.explicacion || ''}`;
+      }
+      
+      document.getElementById("puntuacion").textContent = `Puntuación: ${puntuacion}/${indice + 1}`;
+      indice++;
+
+      if (indice < preguntas.length) {
+        setTimeout(mostrarPregunta, 2500);
+      } else {
+        setTimeout(finalizarCuestionario, 2500);
+      }
+    }
+
+    function finalizarCuestionario() {
+      document.getElementById("pregunta").textContent = "¡Resultados del Cuestionario!";
+      document.getElementById("respuestas").innerHTML = "";
+      document.getElementById("puntuacion").textContent = "";
+      
+      const mensajeFinal = `
+        <p>Puntuación final: <strong>${puntuacion} de ${preguntas.length}</strong></p>
+        <p>Los buses eléctricos de Antapaccay lograrán:</p>
+        <ul style="text-align: left; display: inline-block; margin-top: 10px;">
+          <li>Evitar 2.7 millones de kg de CO₂</li>
+          <li>Reducir 6,448 kg de NOx</li>
+          <li>Disminuir la contaminación acústica</li>
+          <li>Generar empleos en electromovilidad</li>
+        </ul>
+        <p style="margin-top: 20px;">¡Gracias por aprender sobre minería sostenible!</p>
+      `;
+      
+      document.getElementById("resultado").innerHTML = mensajeFinal;
+    }
+
+    mostrarPregunta();
+  </script>
+</body>
+</html>
